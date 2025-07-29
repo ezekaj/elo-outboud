@@ -1,9 +1,21 @@
 """
 Configuration management for Elo Dental Clinic system
 """
+import os
+from pathlib import Path
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings
 from typing import List, Dict, Optional
+
+# Load .env file if it exists
+try:
+    from dotenv import load_dotenv
+    env_path = Path('.env')
+    if env_path.exists():
+        load_dotenv(env_path)
+        print(f"[+] Loaded environment variables from {env_path}")
+except ImportError:
+    print("[!] python-dotenv not available, skipping .env file loading")
 
 
 class DatabaseSettings(BaseSettings):
@@ -81,9 +93,9 @@ class ClinicSettings(BaseSettings):
 
 class LiveKitSettings(BaseSettings):
     """LiveKit configuration"""
-    url: str = Field(..., description="LiveKit server URL")
-    api_key: str = Field(..., description="LiveKit API key")
-    api_secret: str = Field(..., description="LiveKit API secret")
+    url: str = Field(default="wss://test.livekit.cloud", description="LiveKit server URL")
+    api_key: str = Field(default="test-key", description="LiveKit API key")
+    api_secret: str = Field(default="test-secret", description="LiveKit API secret")
     
     class Config:
         env_prefix = "LIVEKIT_"
@@ -91,7 +103,7 @@ class LiveKitSettings(BaseSettings):
 
 class GoogleSettings(BaseSettings):
     """Google API configuration"""
-    api_key: str = Field(..., description="Google Cloud API key")
+    api_key: str = Field(default="test-google-key", description="Google Cloud API key")
     
     class Config:
         env_prefix = "GOOGLE_"
@@ -126,7 +138,7 @@ class AppSettings(BaseSettings):
     environment: str = Field(default="development", description="Application environment")
 
     # API Keys - MUST be set via environment variables
-    openai_api_key: str = Field(..., description="OpenAI API key (required)")
+    openai_api_key: str = Field(default="sk-placeholder", description="OpenAI API key (required for production)")
     lm_studio_api_key: str = Field(default="lm-studio", description="LM Studio API key")
     lm_studio_base_url: str = Field(default="http://localhost:1234/v1", description="LM Studio base URL")
 
