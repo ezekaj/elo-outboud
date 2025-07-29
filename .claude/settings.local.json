@@ -23,7 +23,9 @@
       "Bash(.elvi_envScriptspython.exe -m pip install --upgrade pip)",
       "Bash(timeout:*)",
       "Bash(git config:*)",
-      "Bash(git rebase:*)"
+      "Bash(git rebase:*)",
+      "Bash(git reset:*)",
+      "Bash(git log:*)"
     ],
     "deny": []
   }

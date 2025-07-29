@@ -1,9 +1,9 @@
 from livekit import agents
 from livekit.agents import AgentSession, Agent, RoomInputOptions
 from livekit.plugins import noise_cancellation
-from livekit.plugins import openai as livekit_openai
 from simple_tts import SimpleTTS
 from prompts import AGENT_INSTRUCTION, SESSION_INSTRUCTION
+from lm_studio_llm import LMStudioLLM
 from tools import (
     assess_client_needs,
     schedule_follow_up,
@@ -24,9 +24,10 @@ class EloDentalAgent(Agent):
     def __init__(self) -> None:
         super().__init__(
             instructions=AGENT_INSTRUCTION,
-            llm=livekit_openai.LLM(
-                api_key=settings.openai_api_key,
-                model="gpt-4",  # Updated to use OpenAI GPT-4
+            llm=LMStudioLLM(
+                api_key=settings.lm_studio_api_key,
+                base_url=settings.lm_studio_base_url,
+                model="local-model",  # Using local LM Studio model
                 temperature=0.7,
             ),
             tts=SimpleTTS(),

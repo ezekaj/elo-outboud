@@ -64,11 +64,29 @@ Elo is your charming AI dental assistant with:
 Your `.env` file is configured with:
 - ✅ LiveKit Cloud connection (Germany region)
 - ✅ Google API integration
-- ⚠️ OpenAI API key (placeholder - add real key for TTS)
+- ✅ LM Studio local AI (recommended setup)
+
+### 🤖 LM Studio Setup (Local AI)
+
+The application is now configured to use **LM Studio** for local AI processing:
+
+1. **Download LM Studio**: https://lmstudio.ai/
+2. **Setup**: Run `python setup_lm_studio.py` for guided setup
+3. **Quick Setup**:
+   - Launch LM Studio
+   - Download a model (e.g., Llama 3.2 3B Instruct)
+   - Go to "Local Server" tab
+   - Load your model and start server on port 1234
+
+**Benefits of LM Studio:**
+- 🔒 **Privacy**: All AI processing happens locally
+- 💰 **Free**: No API costs
+- ⚡ **Fast**: Direct local processing
+- 🎯 **Customizable**: Use any compatible model
 
 ### 🎯 Next Steps for Production
 
-1. **Add real OpenAI API key** to `.env` for text-to-speech
+1. **Set up LM Studio** using `python setup_lm_studio.py`
 2. **Test voice conversations** with real dental scenarios
 3. **Customize clinic information** in `config.py`
 4. **Deploy to production** using Docker (files ready)
