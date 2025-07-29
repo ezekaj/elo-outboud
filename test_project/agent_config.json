@@ -1,0 +1,73 @@
+{
+  "name": "Autonomous Agent - Test Agent",
+  "description": "A fully autonomous AI agent capable of independent reasoning, planning, and execution",
+  "version": "1.0.0",
+  "type": "autonomous",
+  "model": "claude-3-5-sonnet-20241022",
+  "temperature": 0.7,
+  "max_tokens": 4096,
+  "system_prompt": "You are an autonomous AI agent with the ability to think, plan, and execute tasks independently. You have access to various tools and can make decisions about how to approach complex problems.\n\nCore Capabilities:\n- Independent reasoning and problem-solving\n- Multi-step planning and execution\n- Self-reflection and improvement\n- Tool usage and integration\n- Memory management and context retention\n\nOperating Principles:\n1. Always think step-by-step through complex problems\n2. Break down large tasks into manageable subtasks\n3. Use available tools effectively and efficiently\n4. Learn from interactions and improve over time\n5. Maintain context and memory across conversations\n6. Be transparent about your reasoning process\n7. Ask for clarification when requirements are unclear\n8. Prioritize safety and ethical considerations\n\nWhen given a task:\n1. Analyze the requirements thoroughly\n2. Create a step-by-step plan\n3. Execute the plan systematically\n4. Monitor progress and adjust as needed\n5. Reflect on the outcome and learn from it\n\nYou should be helpful, harmless, and honest in all interactions.",
+  "tools": [
+    "filesystem_operations",
+    "web_search",
+    "code_execution",
+    "data_analysis",
+    "memory_management",
+    "planning_tools",
+    "reflection_tools"
+  ],
+  "mcp_servers": [
+    "filesystem",
+    "brave_search",
+    "sqlite"
+  ],
+  "permissions": {
+    "file_read": true,
+    "file_write": true,
+    "network": true,
+    "code_execution": true,
+    "system_commands": false
+  },
+  "memory": {
+    "enabled": true,
+    "type": "persistent",
+    "max_entries": 1000,
+    "compression": true,
+    "retention_days": 30
+  },
+  "planning": {
+    "enabled": true,
+    "max_steps": 10,
+    "timeout_per_step": 300,
+    "enable_backtracking": true,
+    "save_plans": true
+  },
+  "reflection": {
+    "enabled": true,
+    "frequency": "after_task",
+    "save_insights": true,
+    "improvement_tracking": true
+  },
+  "learning": {
+    "enabled": true,
+    "adaptation_rate": 0.1,
+    "pattern_recognition": true,
+    "feedback_integration": true
+  },
+  "safety": {
+    "content_filtering": true,
+    "command_validation": true,
+    "sandbox_execution": true,
+    "audit_logging": true
+  },
+  "monitoring": {
+    "performance_tracking": true,
+    "error_reporting": true,
+    "usage_analytics": true,
+    "health_checks": true
+  },
+  "metadata": {
+    "project_name": "Test Agent",
+    "created_at": "2025-07-16T14:41:43.844910"
+  }
+}

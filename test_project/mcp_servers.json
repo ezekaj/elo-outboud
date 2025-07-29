@@ -1,0 +1,265 @@
+{
+  "servers": {
+    "filesystem": {
+      "name": "filesystem",
+      "description": "File system operations and management",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem"
+      ],
+      "env": {},
+      "enabled": true,
+      "timeout": 30,
+      "max_retries": 3,
+      "capabilities": [
+        "read_file",
+        "write_file",
+        "list_directory",
+        "create_directory",
+        "delete_file"
+      ],
+      "security": {
+        "allowed_paths": [
+          "./",
+          "../"
+        ],
+        "forbidden_paths": [
+          "/system",
+          "/windows",
+          "C:\\Windows"
+        ],
+        "max_file_size": "10MB"
+      }
+    },
+    "brave_search": {
+      "name": "brave_search",
+      "description": "Web search using Brave Search API",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      },
+      "enabled": true,
+      "timeout": 30,
+      "max_retries": 3,
+      "capabilities": [
+        "web_search",
+        "news_search",
+        "image_search"
+      ],
+      "rate_limits": {
+        "requests_per_minute": 60,
+        "requests_per_day": 2000
+      }
+    },
+    "github": {
+      "name": "github",
+      "description": "GitHub repository operations",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "enabled": false,
+      "timeout": 30,
+      "max_retries": 3,
+      "capabilities": [
+        "list_repos",
+        "read_file",
+        "create_issue",
+        "create_pr",
+        "search_code"
+      ],
+      "permissions": [
+        "repo",
+        "read:user",
+        "read:org"
+      ]
+    },
+    "sqlite": {
+      "name": "sqlite",
+      "description": "SQLite database operations",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "--db-path",
+        "./agent_data.db"
+      ],
+      "env": {},
+      "enabled": true,
+      "timeout": 30,
+      "max_retries": 3,
+      "capabilities": [
+        "query",
+        "execute",
+        "schema",
+        "backup"
+      ],
+      "security": {
+        "read_only": false,
+        "allowed_operations": [
+          "SELECT",
+          "INSERT",
+          "UPDATE",
+          "DELETE",
+          "CREATE",
+          "DROP"
+        ]
+      }
+    },
+    "postgres": {
+      "name": "postgres",
+      "description": "PostgreSQL database operations",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres"
+      ],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "${POSTGRES_URL}"
+      },
+      "enabled": false,
+      "timeout": 30,
+      "max_retries": 3,
+      "capabilities": [
+        "query",
+        "execute",
+        "schema",
+        "transactions"
+      ],
+      "connection_pool": {
+        "min_connections": 1,
+        "max_connections": 10
+      }
+    },
+    "puppeteer": {
+      "name": "puppeteer",
+      "description": "Web automation and scraping",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ],
+      "env": {},
+      "enabled": false,
+      "timeout": 60,
+      "max_retries": 2,
+      "capabilities": [
+        "navigate",
+        "screenshot",
+        "pdf",
+        "scrape",
+        "interact"
+      ],
+      "browser_options": {
+        "headless": true,
+        "disable_images": false,
+        "user_agent": "Mozilla/5.0 (compatible; ClaudeAgent/1.0)"
+      }
+    },
+    "slack": {
+      "name": "slack",
+      "description": "Slack team communication",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-slack"
+      ],
+      "env": {
+        "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}",
+        "SLACK_USER_TOKEN": "${SLACK_USER_TOKEN}"
+      },
+      "enabled": false,
+      "timeout": 30,
+      "max_retries": 3,
+      "capabilities": [
+        "send_message",
+        "read_messages",
+        "list_channels",
+        "upload_file"
+      ],
+      "permissions": [
+        "channels:read",
+        "chat:write",
+        "files:write"
+      ]
+    },
+    "google_drive": {
+      "name": "google_drive",
+      "description": "Google Drive file operations",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-gdrive"
+      ],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "${GOOGLE_CREDENTIALS_PATH}"
+      },
+      "enabled": false,
+      "timeout": 30,
+      "max_retries": 3,
+      "capabilities": [
+        "list_files",
+        "read_file",
+        "write_file",
+        "share_file",
+        "create_folder"
+      ],
+      "scopes": [
+        "https://www.googleapis.com/auth/drive"
+      ]
+    }
+  },
+  "global_settings": {
+    "default_timeout": 30,
+    "max_concurrent_connections": 5,
+    "health_check_interval": 60,
+    "auto_restart_on_failure": true,
+    "log_all_communications": true,
+    "retry_backoff_multiplier": 2,
+    "max_retry_delay": 300
+  },
+  "server_groups": {
+    "essential": [
+      "filesystem",
+      "sqlite",
+      "brave_search"
+    ],
+    "development": [
+      "filesystem",
+      "sqlite",
+      "github",
+      "puppeteer"
+    ],
+    "production": [
+      "filesystem",
+      "postgres",
+      "brave_search",
+      "slack"
+    ],
+    "research": [
+      "filesystem",
+      "brave_search",
+      "google_drive",
+      "puppeteer"
+    ],
+    "data_analysis": [
+      "filesystem",
+      "sqlite",
+      "postgres",
+      "google_drive"
+    ]
+  },
+  "installation_commands": {
+    "install_all": "npm install -g @modelcontextprotocol/server-filesystem @modelcontextprotocol/server-brave-search @modelcontextprotocol/server-github @modelcontextprotocol/server-sqlite @modelcontextprotocol/server-postgres @modelcontextprotocol/server-puppeteer @modelcontextprotocol/server-slack @modelcontextprotocol/server-gdrive",
+    "install_essential": "npm install -g @modelcontextprotocol/server-filesystem @modelcontextprotocol/server-sqlite @modelcontextprotocol/server-brave-search"
+  }
+}
