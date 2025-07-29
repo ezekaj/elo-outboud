@@ -3,7 +3,7 @@ from livekit.agents import AgentSession, Agent, RoomInputOptions
 from livekit.plugins import noise_cancellation
 from simple_tts import SimpleTTS
 from prompts import AGENT_INSTRUCTION, SESSION_INSTRUCTION
-from lm_studio_llm import LMStudioLLM
+from lm_studio_simple import create_lm_studio_llm
 from tools import (
     assess_client_needs,
     schedule_follow_up,
@@ -24,12 +24,7 @@ class EloDentalAgent(Agent):
     def __init__(self) -> None:
         super().__init__(
             instructions=AGENT_INSTRUCTION,
-            llm=LMStudioLLM(
-                api_key=settings.lm_studio_api_key,
-                base_url=settings.lm_studio_base_url,
-                model="local-model",  # Using local LM Studio model
-                temperature=0.7,
-            ),
+            llm=create_lm_studio_llm(),  # Auto-detects LM Studio or uses fallback
             tts=SimpleTTS(),
             # Using default STT for now
             # stt will be auto-configured by LiveKit

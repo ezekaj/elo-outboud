@@ -7,7 +7,12 @@ import json
 from typing import AsyncIterator, List, Optional, Union
 import httpx
 from livekit.agents import llm
-from livekit.agents._exceptions import APIConnectionError, APIStatusError
+try:
+    from livekit.agents._exceptions import APIConnectionError, APIStatusError
+except ImportError:
+    # Fallback for different LiveKit versions
+    APIConnectionError = Exception
+    APIStatusError = Exception
 from config import settings
 from logging_config import agent_logger
 
@@ -99,7 +104,7 @@ class LMStudioLLM(llm.LLM):
         self,
         *,
         chat_ctx: llm.ChatContext,
-        conn_options: llm.LLMOptions = llm.LLMOptions(),
+        conn_options = None,
         fnc_ctx: Optional[llm.FunctionContext] = None,
     ) -> "LMStudioLLMStream":
         return LMStudioLLMStream(
@@ -118,7 +123,7 @@ class LMStudioLLMStream(llm.LLMStream):
         *,
         llm: LMStudioLLM,
         chat_ctx: llm.ChatContext,
-        conn_options: llm.LLMOptions,
+        conn_options = None,
         fnc_ctx: Optional[llm.FunctionContext],
     ):
         super().__init__(
